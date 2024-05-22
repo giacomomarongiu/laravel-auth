@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\ProjectController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -25,9 +26,10 @@ Route::middleware(['auth', 'verified'])
     // Prefix for views
     ->prefix('admin')
     ->group(function () {
-
         // Default route changed
         Route::get('/', [DashboardController::class, 'index'])->name('dashboard'); 
+        // Route for my projects
+        Route::resource('projects', ProjectController::class);
 
     });
 
