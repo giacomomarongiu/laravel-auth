@@ -23,8 +23,8 @@
                     </tr>
                 </thead>
 
-                {{--             @dd($projects)
- --}}
+                {{--             @dd($projects) --}}
+
                 <tbody>
 
                     @forelse ($projects as $project)
@@ -41,7 +41,7 @@
                                     <a class="" href="{{ route('admin.projects.show', $project) }}">
                                         <i class="fas fa-eye fa-sm fa-fw"></i>
                                     </a>
-                                    <a href="">
+                                    <a href="{{ route('admin.projects.edit', $project) }}">
                                         <i class="fas fa-pencil-alt fa-sm fa-fw"></i>
                                     </a>
 
@@ -76,7 +76,7 @@
                                                         data-bs-dismiss="modal">
                                                         Close
                                                     </button>
-                                                    <form action="{{-- {{ route('comics.destroy', $comic) }} --}}" method="post">
+                                                    <form action="{{ route('admin.projects.destroy', $project) }}" method="post">
                                                         @csrf
                                                         @method('DELETE')
                                                         <button type="submit" class="btn btn-danger">

@@ -38,7 +38,7 @@ class ProjectController extends Controller
         $val_data['slug'] = $slug;
 
         Project::create($val_data);
-        return to_route('admin.projects.index')->with('message', "Good Job!");
+        return to_route('admin.projects.index');
     }
 
     /**
@@ -48,14 +48,15 @@ class ProjectController extends Controller
     {
         //dd($project)
         return view('admin.projects.show', compact('project'));
-    } 
+    }
 
     /**
      * Show the form for editing the specified resource.
      */
     public function edit(Project $project)
     {
-        //
+        return view('admin.projects.edit', compact('project'));
+
     }
 
     /**
@@ -63,7 +64,11 @@ class ProjectController extends Controller
      */
     public function update(UpdateProjectRequest $request, Project $project)
     {
-        //
+        $val_data = $request->validated();
+        $slug = Str::slug($request->title, '-');
+        $val_data['slug'] = $slug;
+        $project->update($val_data);
+        return to_route('admin.projects.index', $project);
     }
 
     /**
@@ -71,6 +76,8 @@ class ProjectController extends Controller
      */
     public function destroy(Project $project)
     {
-        //
+
+        $project->delete();
+        return to_route('admin.projects.index')->with('message', 'Project deleted successfully');
     }
 }
