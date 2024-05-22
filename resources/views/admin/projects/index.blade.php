@@ -2,8 +2,9 @@
 
 @section('content')
     <div class="container">
-        <header>
+        <header class="py-3 d-flex justify-content-between">
             <h1 class="text-primary">Projects</h1>
+            <button class="btn btn-primary"><a class="text-light" href="{{ route('admin.projects.create') }}">Add New Project</a></button>
         </header>
 
         <div class="table-responsive">
@@ -40,7 +41,7 @@
                                     <a class="" href="{{ route('admin.projects.show', $project) }}">
                                         <i class="fas fa-eye fa-sm fa-fw"></i>
                                     </a>
-                                    <a href="}">
+                                    <a href="">
                                         <i class="fas fa-pencil-alt fa-sm fa-fw"></i>
                                     </a>
 
