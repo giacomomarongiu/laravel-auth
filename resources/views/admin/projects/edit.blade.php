@@ -3,7 +3,7 @@
 @section('content')
     <div class="container">
 
-        <form class="form-control bg-light p-4" action="{{ route('admin.projects.update', $project) }}" method="post">
+        <form class="form-control bg-light p-4" action="{{ route('admin.projects.update', $project) }}" method="post" enctype="multipart/form-data">
             @csrf
             @method('PUT')
 
@@ -21,7 +21,7 @@
             <!-- Input for image-->
             <div class="mb-3">
                 <label for="img" class="form-label">Image</label>
-                <input type="text" class="form-control @error('img') is-invalid @enderror" name="img" id="img"
+                <input type="file" class="form-control @error('img') is-invalid @enderror" name="img" id="img"
                     aria-describedby="imgHelper" placeholder="img" value="{{ old('img', $project->img) }}" />
                 @error('img')
                     <div class="text-danger">{{ $message }}</div>

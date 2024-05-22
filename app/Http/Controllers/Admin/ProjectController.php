@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Project;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use App\Http\Requests\StoreProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
@@ -33,9 +34,17 @@ class ProjectController extends Controller
      */
     public function store(StoreProjectRequest $request)
     {
+        //dd($request->all());
         $val_data = $request->validated();
         $slug = Str::slug($request->title, '-');
         $val_data['slug'] = $slug;
+
+
+        //Uploading img
+
+        $img_path = Storage::put('uploads', $val_data['img']);
+        $val_data['img'] = $img_path;
+
 
         Project::create($val_data);
         return to_route('admin.projects.index');
@@ -67,6 +76,17 @@ class ProjectController extends Controller
         $val_data = $request->validated();
         $slug = Str::slug($request->title, '-');
         $val_data['slug'] = $slug;
+
+        if ($request->has('img')) {
+            if ($project->img) {
+                Storage::delete($project->img);
+            }
+            $img_path = Storage::put('uploads', $val_data['img']);
+            $val_data['img'] = $img_path;
+        }
+
+
+
         $project->update($val_data);
         return to_route('admin.projects.index', $project);
     }
