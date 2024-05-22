@@ -15,7 +15,7 @@
                         <th scope="col">ID</th>
                         <th scope="col">Title</th>
                         <th scope="col">Slug</th>
-                        <th scope="col">Img URL</th>
+                        <th scope="col">Img</th>
                         <th scope="col">Start Date</th>
                         <th scope="col">End Date</th>
                         <th scope="col">Description</th>
@@ -33,16 +33,19 @@
                         <tr class="">
                             <td scope="row">{{ $project->id }}</td>
                             <td>{{ $project->title }}</td>
-
                             <td>{{ $project->slug }}</td>
 
-                            @if (Str::startsWith($project->project_image, 'https://'))
-                                <td><img width="150" src="{{ $project->img }}" alt=""></td>
-                            @else
-                                <td> <img width="100" loading="lazy"
-                                        src="{{ asset('storage/' . $project->img) }}" alt="{{ $project->title }}">
-                                </td>
-                            @endif
+
+                            <td>
+                                <!--If my url starts with http i print it  -->
+                                @if (Str::startsWith($project->img, 'https://'))
+                                    <img width="100" loading="lazy" src="{{ $project->img }}" alt="">
+                                @else
+                                    <!--else i will use asset(...) for print it  -->
+                                    <img width="100" loading="lazy" src="{{ asset('storage/' . $project->img) }}"
+                                        alt="{{ $project->title }}">
+                                @endif
+                            </td>
 
                             <td>{{ $project->start_date }}</td>
                             <td>{{ $project->end_date }}</td>

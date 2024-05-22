@@ -18,7 +18,7 @@ class ProjectController extends Controller
     public function index()
     {
         //dd(Project::all());
-        return view('admin.projects.index', ['projects' => Project::orderByDesc('id')->paginate(8)]);
+        return view('admin.projects.index', ['projects' => Project::orderByDesc('id')->paginate(10)]);
     }
 
     /**
@@ -35,17 +35,20 @@ class ProjectController extends Controller
     public function store(StoreProjectRequest $request)
     {
         //dd($request->all());
+        //Validation
         $val_data = $request->validated();
+
+        //Creating a slug content
         $slug = Str::slug($request->title, '-');
         $val_data['slug'] = $slug;
 
 
         //Uploading img
-
         $img_path = Storage::put('uploads', $val_data['img']);
+        // Path assigned at my istance
         $val_data['img'] = $img_path;
 
-
+        //Creating new istance
         Project::create($val_data);
         return to_route('admin.projects.index');
     }
@@ -73,20 +76,25 @@ class ProjectController extends Controller
      */
     public function update(UpdateProjectRequest $request, Project $project)
     {
+        //dd($request->all());
+        //Validation
         $val_data = $request->validated();
+        //slug
         $slug = Str::slug($request->title, '-');
         $val_data['slug'] = $slug;
 
+        // Checking if in my request there is an img
         if ($request->has('img')) {
+            //Checking if there is already an img and deleting it
             if ($project->img) {
                 Storage::delete($project->img);
             }
+            //path to my istance
             $img_path = Storage::put('uploads', $val_data['img']);
             $val_data['img'] = $img_path;
         }
 
-
-
+        //update my istance
         $project->update($val_data);
         return to_route('admin.projects.index', $project);
     }
@@ -96,7 +104,12 @@ class ProjectController extends Controller
      */
     public function destroy(Project $project)
     {
-
+        //If i do not do this my istance in deleted but my file will remain in my storage
+        if ($project->img) {
+            //Method delete for remove file from storage
+            Storage::delete($project->img);
+        }
+        ;
         $project->delete();
         return to_route('admin.projects.index')->with('message', 'Project deleted successfully');
     }
